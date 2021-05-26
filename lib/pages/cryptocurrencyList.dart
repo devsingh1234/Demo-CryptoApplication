@@ -174,11 +174,10 @@ import 'package:home_page_crypto/pages/homePage.dart';
                   alignment: Alignment.bottomRight,
                     child: FlatButton(
                       child: Text('FlatButton'),
-                      onPressed: ()  async {
-                        await Navigator.pushReplacementNamed(
-                            context,'HomePage', arguments:{
-                              'hi':5
-                        });
+                      onPressed: ()   {
+                         Navigator.pushReplacementNamed(
+                            context,'HomePage', arguments: (pricedata) as Map
+                        );
 
                       },
                       color: Colors.green,

@@ -23,11 +23,12 @@ class Home extends StatefulWidget {
 
             // ignore: file_names
 
-
+var instace;
   @override
         Widget build(BuildContext context) {
+    instace= ((ModalRoute.of(context)!.settings.arguments ) as Map).isNotEmpty;
 
-    data = data.isNotEmpty ? data : ModalRoute.of(context)!.settings.arguments as Map;;
+
 
           return Scaffold(
             appBar: AppBar(
@@ -66,7 +67,7 @@ class Home extends StatefulWidget {
           // ignore: file_names
 
           
-          if (data.isNotEmpty) (Text('${data ["hi"]}')) ,
+         // if (data.isNotEmpty) (Text('${data ["hi"]}')) ,
 
               ],
             ),
