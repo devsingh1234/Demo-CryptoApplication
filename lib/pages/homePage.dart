@@ -5,73 +5,119 @@ import 'dart:convert';
 import 'package:home_page_crypto/services/data_CryptoCurrency.dart';
 class Home extends StatefulWidget {
 
+  @override
   _HomeState createState() => _HomeState();
 }
 
-        class _HomeState extends State<Home> {
+        class _HomeState extends State<Home>  {
           @override
           void initState() {
     // TODO: implement initState
     super.initState();
   }
-          _HomeState () {
 
-          }
-          Map data={
-          };
+          Map data={};
+
 
 
             // ignore: file_names
-
-var instace;
   @override
         Widget build(BuildContext context) {
-    instace= ((ModalRoute.of(context)!.settings.arguments ) as Map).isNotEmpty;
+    if (data.isEmpty) {
+      if (null != ModalRoute.of(context)!.settings.arguments) {
+        data = ModalRoute.of(context)!.settings.arguments as Map;
+      }
+    }
+    if(data.isNotEmpty){
+      print(data);
+    };
 
 
 
           return Scaffold(
+              resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              title: Text('Home Page '),
+              title: Text('Subscribed Cryptocurrencies '),
               centerTitle: true,
               elevation: 0.0,
+              backgroundColor: Colors.deepPurple,
             ),
 
 
 
 
 
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 0),
-      child:Column(
-       mainAxisAlignment: MainAxisAlignment.start,
+      body: Stack(
         children: [
+
+          Padding(
+          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+
+        // ignore: file_names
+
+
+
+            child:  Column(
+              children:[
+                if(data.isNotEmpty) Stack(
+                  children: [
+          SingleChildScrollView(
+          physics: ScrollPhysics(),
+                    child:ListView.builder(
+                        shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: data.length,
+                        itemBuilder:(context,index) {
+                          var key = data.keys.elementAt(index);
+                        return Card(
+                          child: ListTile(
+
+                            title: Text('${key}    ${data['${key}']['price_in_INR']}'),
+
+                          ),
+                        );
+                        }
+                    )
+          ),
+
+                  ],
+
+                ),
+
+
+
+           ],
+         ),
+
+
+
+),
           Align(
+
             alignment: Alignment.bottomRight,
-            child: FlatButton(
-              color: Colors.amber,
+            child:FlatButton(
+              color:   Colors.deepPurple,
               minWidth: 50.0,
               height: 50.0,
-              child: Text('navigate to cryptocurrency list'),
+              child: Text('navigate to cryptocurrency list',
+              style: TextStyle(
+                color: Colors.white,
+              ),),
               onPressed: ()  {
                 Navigator.pushNamed(context, 'CryptoCurrencyList'
                 );
               },
 
             ),
-
           ),
-          /*if(subscribed_data!=null){
-          (Text('${subscribed_data ["Bitcoinprice_in_USD"]}')),
-          }*/
-          // ignore: file_names
-
-          
-         // if (data.isNotEmpty) (Text('${data ["hi"]}')) ,
-
               ],
-            ),
+
+
+
     )
-    );
+          );
   }
+
+
+
 }

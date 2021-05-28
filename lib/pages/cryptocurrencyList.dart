@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:home_page_crypto/services/data_CryptoCurrency.dart';
 import 'package:home_page_crypto/pages/homePage.dart';
+import 'package:home_page_crypto/pages/detailsCryptoCurrency.dart';
 
 
       class CryptoCurrencyList extends StatefulWidget {
@@ -23,7 +24,11 @@ import 'package:home_page_crypto/pages/homePage.dart';
 
             //currencies in home page.
               Map pricedata={};
-              Map currency_subscribed_data={};
+              Map currency_subscribed_data={
+
+              };
+
+
               List<currency> currency_data=[
               currency(url_data:'bitcoin',currency_pic:'bitcoin.png',currency_name:'Bitcoin'),
                 currency(url_data:'ethereum',currency_pic:'ethereum.png',currency_name:'Ethereum'),
@@ -48,7 +53,9 @@ import 'package:home_page_crypto/pages/homePage.dart';
                     '${currency_data[index].currency_name}volumeUsd24Hr':instance.volumeUsd24Hr,
                     '${currency_data[index].currency_name}changePercent24Hr':instance.changePercent24Hr,
                       '${currency_data[index].currency_name}vwap24Hr':instance.vwap24Hr,
-
+                      '${currency_data[index].currency_name}symbol':instance.symbol,
+                      '${currency_data[index].currency_name}sign':instance.sign,
+                      '${currency_data[index].currency_name}rank':instance.rank,
                     });
                   }
                   return true;
@@ -64,9 +71,17 @@ import 'package:home_page_crypto/pages/homePage.dart';
               resizeToAvoidBottomInset : false,
 
                 appBar: AppBar(
-                  title: Text('CryptoCurrencyList'),
+                  title: Text('Currency List',
+                    style: TextStyle(
+
+                      fontSize: 30.0,
+                      fontFamily: 'font1.otf',
+                      letterSpacing: 1.0,
+                    ),
+                  ),
                   centerTitle: true,
                   elevation: 0.0,
+                  backgroundColor: Colors.deepPurple,
                 ),
 
 
@@ -78,17 +93,16 @@ import 'package:home_page_crypto/pages/homePage.dart';
              builder:(context,  snapshot) {
 
 
-
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator(
+                    color: Colors.deepPurple,
                   ));
                   }
 
                 else {
             return Stack(
               children: [
-
-               ListView.builder(
+              ListView.builder(
                   itemCount: currency_data.length,
 
                   itemBuilder: (context, index) {
@@ -97,28 +111,28 @@ import 'package:home_page_crypto/pages/homePage.dart';
 
                     return Card(
 
-                      // ignore: file_names
+                      margin: EdgeInsets.fromLTRB(18.0, 18.0, 18.0,0),
+                      color: Colors.grey[200],
+
                       child:Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 1.0, horizontal: 4.0),
+                        padding:   EdgeInsets.all(1.0),
                         child: ListTile(
+
                           onTap: () {
                             Navigator.pushNamed(
-                                context, 'SubscribeUnsubscribe', arguments: ({
-                                'currency_name': currency_data[index]
-                                    .currency_name,
+                                context, 'DetailsCryptocurrency', arguments: ({
+                                'currency_name': currency_data[index].currency_name,
                                 'currency_pic': currency_data[index].url_data,
-                                'price': pricedata["${currency_data[index]
-                                    .currency_name}price_in_INR"],
+                                'price': pricedata["${currency_data[index].currency_name}price_in_INR"],
 
-
-                                /*'marketCapUsd':pricedata["${currency_data[index].currency_name}marketCapUsd"],
+                                'rank':pricedata["${currency_data[index].currency_name}rank"],
+                                'marketCapUsd':pricedata["${currency_data[index].currency_name}marketCapUsd"],
                               'maxSupply':pricedata["${currency_data[index].currency_name}maxSupply"],
-                              'volumeUsd24Hr':pricedata["${currency_data[index].currency_name}volumeUsd24Hr"],*/
+                              'volumeUsd24Hr':pricedata["${currency_data[index].currency_name}volumeUsd24Hr"],
 
                                 'changePercent24Hr': pricedata["${currency_data[index]
                                     .currency_name}changePercent24Hr"],
-                                /*'vwap24Hr':pricedata["${currency_data[index].currency_name}vwap24Hr"],*/
+                                'vwap24Hr':pricedata["${currency_data[index].currency_name}vwap24Hr"],
 
 
                                 })
@@ -126,34 +140,66 @@ import 'package:home_page_crypto/pages/homePage.dart';
                           },
 
 
-                          title: Text('${currency_data[index].currency_name}  \n ${pricedata["${currency_data[index].currency_name}price_in_USD"]}',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                            ),),
+                          title: Row(
+                    children:[
+                      Text('${pricedata["${currency_data[index].currency_name}symbol"]}',
+                      style:TextStyle(
+                            fontFamily: 'font1.otf',
+                            //fontWeight: FontWeight.w800,
+                            fontSize: 22.0,
+                          ),
+                      ),
+                      SizedBox(width: 10.0),
+                      if(pricedata["${currency_data[index].currency_name}sign"]=='+') Icon( Icons.arrow_drop_up_outlined,
+                        size: 18,color: Colors.green,),
+                      if(pricedata["${currency_data[index].currency_name}sign"]=='') Icon( Icons.arrow_drop_down_outlined,
+                        size: 18,color: Colors.red,),
+                      SizedBox(width: 2.0),
+                        Text('${pricedata["${currency_data[index].currency_name}sign"]}${pricedata["${currency_data[index].currency_name}changePercent24Hr"]}',
+                          style:TextStyle(
+                            fontFamily: 'font1.otf',
+                            //fontWeight: FontWeight.w800,
+                            fontSize: 19.0,
+                          ),),
+                      SizedBox(width: 10.0),
+                      Text('\$',
+                    style:TextStyle(
+                    fontFamily: 'font1.otf',
+                    fontSize: 19.0,
+                    ),),
 
+                      Text('${pricedata["${currency_data[index].currency_name}price_in_USD"]}',
+                        style:TextStyle(
+                          fontFamily: 'font1.otf',
+                          //fontWeight: FontWeight.w800,
+                          fontSize: 19.0,
+                        ),),
+
+],
+                      ),
+
+                          //SUBSCRIBED DATA
                           subtitle: Row(
                             children: [
+
                               Padding(
-                                  padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
+                                  padding: EdgeInsets.fromLTRB(223.0, 15.0, 0, 0),
                                 child: FlatButton(
                                     onPressed: (){
-                                      /*Map intermediate={
-                                        '${currency_data[index]
-                                            .currency_name}':currency_data[index]
-                                            .currency_name,
-                                        '${currency_data[index].currency_name}price_in_INR':pricedata["${currency_data[index]
-                                            .currency_name}price_in_INR"],
-                                      };*/
                                     currency_subscribed_data.addAll({
                                       '${currency_data[index]
-                                          .currency_name}':pricedata["${currency_data[index]
+                                          .currency_name}': {
+                                      'price_in_INR'  :pricedata["${currency_data[index]
                                             .currency_name}price_in_INR"],
 
+                                      }
                                     });
                                     },
 
-                                  color: Colors.blue,
-                                  child: Text('Subscribe'),
+                                  color: Colors.deepPurple,
+                                  child: Text('Subscribe',style: TextStyle(
+                                    color: Colors.white,
+                                  ),),
 
                                 ),
                                   // ignore: file_name
@@ -162,6 +208,7 @@ import 'package:home_page_crypto/pages/homePage.dart';
                             ],
 
                           ),
+
                         ),
 
                       ),
@@ -170,21 +217,30 @@ import 'package:home_page_crypto/pages/homePage.dart';
                   },
 
                 ),
+
                 Align(
-                  alignment: Alignment.bottomRight,
-                    child: FlatButton(
-                      child: Text('FlatButton'),
-                      onPressed: ()   {
-                         Navigator.pushReplacementNamed(
-                            context,'HomePage', arguments: (pricedata) as Map
-                        );
+                  alignment: Alignment.bottomLeft,
+               child: ButtonTheme(
+               buttonColor: Colors.deepPurple[600],
+               child: RaisedButton(
 
-                      },
-                      color: Colors.green,
-                      textColor: Colors.white,
-                    ),
-                  ),
+                 onPressed: ()   {
+                   Navigator.pushNamed(context, 'HomePage',arguments: currency_subscribed_data);
+                 },
+               child: Icon(
+               Icons.arrow_back_ios,
+               color: Colors.white,
+               size: 30.0,
 
+
+               ),
+
+
+               ),
+               shape: CircleBorder(side: BorderSide.none),
+               padding:EdgeInsets.all(15.0),
+               ),
+                ),
                ],
               );
 
@@ -197,4 +253,5 @@ import 'package:home_page_crypto/pages/homePage.dart';
             )
             );
   }
+
       }
